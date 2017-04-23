@@ -1,0 +1,134 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple - Counting Vocabulary</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    <!-- Semantic UI Imports -->
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.min.css' %}">
+    <script src="{% static 'semantic.min.js' %}"></script>
+
+</head>
+<body>
+
+<div class="ui container">
+
+    <!-- Header -->
+    <div class="ui hidden divider"></div>
+    <h2 class="ui center aligned icon header">
+        <i class="circular shekel icon"></i>
+        Simple Counting Vocabulary
+    </h2>
+
+
+    <!-- Input Area -->
+    <form class="ui form" action="{% url 'simple-analyze-url' %}" method="post">
+        {% csrf_token %}
+
+        <div class="field">
+            <div class="ui error message">
+            </div>
+        </div>
+
+        <div class="field">
+            <!--
+            <textarea placeholder="Enter text you want..."></textarea>
+            -->
+            {{ form.text }}
+        </div>
+
+    </form>
+
+    <!-- Analyze Action -->
+    <div id="ui-analyze-button" class="ui center aligned basic segment">
+        <button class="ui primary big button">Analyze</button>
+    </div>
+
+    <!-- Statistic -->
+    <div class="ui hidden divider"></div>
+    <div class="ui three statistics">
+        <div class="statistic">
+            <div class="value">
+                {{ data.tokens }}
+            </div>
+            <div class="label">
+                Tokens
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="value">
+                {{ data.word_types }}
+            </div>
+            <div class="label">
+                Word Types
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="value">
+                {{ data.lexical_diversity }}
+            </div>
+            <div class="label">
+                Lexical Diversity
+            </div>
+        </div>
+    </div>
+
+    <!-- Word Types Statistics -->
+    <div class="ui hidden divider"></div>
+    <table class="ui very padded table">
+        <thead>
+        <tr>
+            <th>Word Type</th>
+            <th>Rating</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for w, p in data.word_type_collection %}
+            <tr>
+                <td>{{ w }}</td>
+                <td>{{ p }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        $('#ui-analyze-button').click(function () {
+            $('.ui.form').submit();
+        });
+
+        $('.ui.form')
+            .form({
+                fields: {
+                    requester: {
+                        identifier: 'id_text',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'No text to analyze'
+                            },
+                        ]
+                    },
+                },
+                onSuccess: function () {
+                    //$('.ui.inverted.dimmer').dimmer('show');
+                    return true;
+                }
+            });
+    });
+</script>
+
+</html>
