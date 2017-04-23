@@ -25,12 +25,12 @@
 
     <!-- Header -->
     <div class="ui hidden divider"></div>
-    <h2 class="ui center aligned image header">
-
-        <img class="ui centered circular image" src="{% static "s.png" %}">
-
-        Simple Counting Vocabulary
-    </h2>
+    <div class="ui center aligned basic segment">
+        <img class="ui tiny centered circular image" src="{% static "s.png" %}">
+        <h2 class="ui header">
+            Simple Counting Vocabulary
+        </h2>
+    </div>
 
 
     <!-- Input Area -->
@@ -43,9 +43,6 @@
         </div>
 
         <div class="field">
-            <!--
-            <textarea placeholder="Enter text you want..."></textarea>
-            -->
             {{ form.text }}
         </div>
 
@@ -56,55 +53,57 @@
         <button class="ui primary big button">Analyze</button>
     </div>
 
-    <!-- Statistic -->
-    <div class="ui hidden divider"></div>
-    <div class="ui three statistics">
-        <div class="statistic">
-            <div class="value">
-                {{ data.tokens }}
-            </div>
-            <div class="label">
-                Tokens
-            </div>
-        </div>
-        <div class="statistic">
-            <div class="value">
-                {{ data.word_types }}
-            </div>
-            <div class="label">
-                Word Types
-            </div>
-        </div>
-        <div class="statistic">
-            <div class="value">
-                {{ data.lexical_diversity }}
-            </div>
-            <div class="label">
-                Lexical Diversity
-            </div>
-        </div>
-    </div>
+    {% if data %}
 
-    <!-- Word Types Statistics -->
-    <div class="ui hidden divider"></div>
-    <table class="ui very padded table">
-        <thead>
-        <tr>
-            <th>Word Type</th>
-            <th>Rating</th>
-        </tr>
-        </thead>
-        <tbody>
+        <!-- Statistic -->
+        <div class="ui hidden divider"></div>
+        <div class="ui three statistics">
+            <div class="statistic">
+                <div class="value">
+                    {{ data.tokens }}
+                </div>
+                <div class="label">
+                    Tokens
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    {{ data.word_types }}
+                </div>
+                <div class="label">
+                    Word Types
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    {{ data.lexical_diversity }}
+                </div>
+                <div class="label">
+                    Lexical Diversity
+                </div>
+            </div>
+        </div>
 
-        {% for w, p in data.word_type_collection %}
+        <!-- Word Types Statistics -->
+        <div class="ui hidden divider"></div>
+        <table class="ui very padded table">
+            <thead>
             <tr>
-                <td>{{ w }}</td>
-                <td>{{ p }}</td>
+                <th>Word Type</th>
+                <th>Rating</th>
             </tr>
-        {% endfor %}
+            </thead>
+            <tbody>
+            {% for w, p in data.word_type_collection %}
+                <tr>
+                    <td>{{ w }}</td>
+                    <td>{{ p }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-        </tbody>
-    </table>
+    {% endif %}
 
 </div>
 
