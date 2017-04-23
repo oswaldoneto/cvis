@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, RedirectView
 
 from simple.views import AnalyzeView
 
@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     #TODO: move to urls.py inside app
+    url(r'^$', RedirectView.as_view(url='simple/analyze', permanent=False), name='index'),
     url(r'^simple/analyze$', AnalyzeView.as_view(), name='simple-analyze-url'),
 ]
